@@ -15,8 +15,8 @@ Here you will find all basic information, theory, installation guides, and group
 
 ## 📚 Dokumentation & Einstieg / Documentation & Entry
 
-- [Deutsche Einführung & Anleitung](./ResoNet_Erklärung.md)
-- [English Introduction & Guide](./ResoNet_Theory_EN.md)
+- [Deutsche Einführung & Anleitung](./README.de.md)
+- [English Introduction & Guide](./README.en.md)
 
 ---
 
