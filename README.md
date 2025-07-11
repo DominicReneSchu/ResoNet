@@ -22,15 +22,14 @@ Here you will find all basic information, theory, installation guides, and group
 
 ## 🚀 Schnellstart / Quickstart
 
-- [README (Deutsch)](./README_de.md)
-- [README (English)](./README_en.md)
+- [README (Deutsch)](https://github.com/DominicReneSchu/public/blob/main/de/fakten/docs/gesellschaft/resonet_erkl%C3%A4rung.md)
+- [README (English)](https://github.com/DominicReneSchu/public/blob/main/en/facts/docs/society/resonet_theory.md)
 
 ---
 
 ## 🔗 Weitere Gruppenelemente / Further Field Elements
 
 - [Systemische Resonanzregel / Systemic Resonance Rule](https://github.com/DominicReneSchu/public)
-- [GitHub Issues & Feedback](https://github.com/DominicReneSchu/ResoNet/issues)
 
 ---
 
