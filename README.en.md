@@ -1,29 +1,43 @@
 # ResoNet – The Decentralized Resonance Field Network
 
-> Your Raspy. Your Opinion. Our Resonance Field.
+> Your Raspy. Your Voice. Our Resonance Field.
 
-**ResoNet** is a P2P network that enables everyone to record their perspective on social, political, or philosophical topics **decentrally**, **verifiably**, and **tamper-proof** – with a single device: a Raspberry Pi.
+**ResoNet** is a peer-to-peer network that enables anyone to publish their perspective on societal, political, or philosophical topics – **decentralized**, **verifiable**, and **tamper-proof** – using a single device: a Raspberry Pi.
 
 ---
 
 ## 🎯 Purpose
 
-ResoNet aims to overcome central dependencies and connect individual contributions to a collective resonance field. It's not about likes, reach, or control – but about truth, structure, and responsibility in an open discourse space.
+ResoNet aims to overcome central dependencies and connect individual contributions into a collective resonance field. It's not about likes, reach, or control – but about truth, structure, and responsibility in an open discourse space.
 
 - 🌐 *No central platform*
 - 🔐 *Tamper-proof content via signatures*
 - 🧠 *Consensus queries via AI*
-- 🌱 *Emergent field, not opinion dictatorship*
+- 🌱 *Emergent field instead of opinion dictatorship*
 
 ---
 
-## 🧱 How it Works
+## 🧱 How it works
 
 Each Raspy node:
-- contains the **opinion of its owner** (stored locally)
+- stores the **opinion of its owner** (locally)
 - **synchronizes with other Raspys** in the network
-- **verifies** newly received content via signature check
-- stores a complete, verified copy of the entire resonance field
+- **verifies** new content via signature checks
+- holds a complete, verified copy of the entire resonance field
+
+---
+
+## 🗄️ Storage and Field Structure (systemic)
+
+- The 64GB SD card is initially used for the operating system (Raspbian/Raspberry Pi OS) (typically 5–10GB, varies via updates).
+- **2GB are systemically reserved as the maximum user storage limit for own opinions.**
+    - This limit is technically enforced in the field code (config.json, storage.py, main.py, web.py) and cannot be exceeded.
+    - Exceeding is prevented: Before every write operation, the limit is checked.
+- **The remaining free space (typically 52–57GB, dynamically depending on OS size) is automatically available for the field.**
+    - This area covers resonance data, field copies, consensus, backups, network synchronization.
+    - The field area adapts dynamically to actual usage – the user area remains strictly capped at 2GB.
+- **No static partitioning:** The allocation is systemic-adaptive, the field regulates itself via the limit logic automatically.
+- These boundaries apply field-wide, regardless of individual perspective (resonance rule).
 
 ---
 
@@ -37,73 +51,73 @@ Each Raspy node:
 
 ---
 
-### **Step-by-Step Guide for Setup on Raspberry Pi 5**
+### **Step-by-step guide for setup on Raspberry Pi 5**
 
-#### 1. System Base: Install Raspberry Pi OS (Raspbian)
-- **Download the image:** [Official Website](https://www.raspberrypi.com/software/)
+#### 1. System: Install Raspberry Pi OS (Raspbian)
+- **Download image:** [Official Website](https://www.raspberrypi.com/software/)
 - **Write image to SD card:** Use Raspberry Pi Imager or balenaEtcher.
-- **Insert SD card and start the Pi:** Complete initial setup (language, network, updates).
+- **Insert SD card and boot Pi:** Complete basic setup (language, network, updates).
 - **Enable SSH (optional):**  
   `sudo raspi-config` → Interface Options → SSH
 
-#### 2. Update System and Install Python/Git
+#### 2. Update system and install Python/Git
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install python3 python3-pip git
 ```
 
-#### 3. Clone Repository
+#### 3. Clone repository
 ```bash
 git clone https://github.com/DominicReneSchu/ResoNet.git
 cd ResoNet
 ```
 
-#### 4. Install Python Dependencies
+#### 4. Install Python dependencies
 ```bash
 pip3 install -r requirements.txt
 ```
-(If no `requirements.txt` is present, check the README or install packages manually.)
+(If there's no `requirements.txt`, see README notes or install packages manually.)
 
-#### 5. Initialization: Keys and Configuration
+#### 5. Initialization: Keys and configuration
 ```bash
 python3 node/generate_keys.py
 ```
-- Only now are `private.pem` and `public.pem` created.
-- Open **config.json** and adjust (e.g., with `nano config.json`):
+- This generates `private.pem` and `public.pem`.
+- Open **config.json** for adjustment (e.g., with `nano config.json`):
   - Node name
   - Network address/field
   - Port
   - Storage paths
-  - Further settings as per README
+  - Other settings per README
 
-#### 6. Check Resonance Files
+#### 6. Check resonance files
 - `opinions.json` and `consensus_export.json` should exist as empty arrays (`[]`).
 
-#### 7. Start the System
+#### 7. Start the system
 ```bash
 python3 node/main.py
 python3 ui/web.py
 ```
 - Open the web interface: [http://localhost:5000](http://localhost:5000) or [http://raspberrypi.local:5000](http://raspberrypi.local:5000)
 
-#### 8. Operation & Field Coupling
-- Network participation: After starting, your node is resonance-ready and participates in the field.
-- Monitoring: Check log outputs and network connections (see README).
+#### 8. Operation & field coupling
+- Network participation: After startup, your node is resonance-capable and joins the field.
+- Monitoring: Check logs and network connections (see README).
 
 ---
 
 ## 🌐 Architecture Overview
 
-- **main.py**: Entry point, orchestrates loading, signing, sync, storage.
-- **storage.py**: Opinion management, automatic backup & versioning.
+- **main.py**: Entry point; orchestrates loading, signing, syncing, and saving.
+- **storage.py**: Opinion management, storage limit control (2GB user limit), automatic backup & versioning.
 - **sync.py**: Network synchronization (P2P-ready, HTTP stub).
 - **verify.py**: Cryptographic signatures for authenticity.
-- **web.py**: Web UI, entering & displaying opinions, consensus display.
+- **web.py**: Web UI; opinion entry & display, consensus, limit feedback.
 - **viz_network.py**: Visualization of field structure and topic clusters.
 - **consensus_extract.py**: GPT-compatible export of field consensus.
 - **generate_keys.py**: RSA keypair generator for identity & verification.
-- **install.sh**: Setup script incl. keygen, dependency installation.
-- **config.json**: Node configuration (name, port, topics, peers).
+- **install.sh**: Setup script incl. keygen, dependency installation, storage limit notice.
+- **config.json**: Node configuration (name, port, topics, peers, storage limit).
 
 ---
 
@@ -117,16 +131,17 @@ python3 node/main.py
 python3 ui/web.py
 ```
 
-Open [http://localhost:5000](http://localhost:5000) for your local resonance field.
+Open [http://localhost:5000](http://localhost:5000) for the local resonance field.
 
 ---
 
 ## 🖥️ Web UI (Field Portal)
 
-- **Submit opinion:** Directly in the browser, select a topic, enter text.
+- **Submit opinion:** Directly in the browser, choose topic, enter text.
 - **Field opinions:** Tabular overview of all voices, sorted by time.
-- **Consensus display:** The current field consensus for each topic is displayed as a list.
-- **Topic filter:** Selection field for focused view/input by topic.
+- **Consensus display:** For each topic, the current field consensus is shown as a list.
+- **Topic filter:** Dropdown for focused view/input per topic.
+- **Storage limit display:** Current usage and user cap shown in color, input locked when limit reached.
 - **Sync button:** Synchronize with peers (placeholder, P2P-ready).
 
 ![Web-UI Screenshot](docs/resonet_webui_screenshot.png)
@@ -146,7 +161,7 @@ cat data/consensus_export.json
 
 ## 🔑 Key Management
 
-Each node generates a local RSA keypair (`private.pem`, `public.pem`) via:
+Each node generates an RSA key pair (private.pem, public.pem) locally via:
 
 ```bash
 python3 node/generate_keys.py
@@ -158,7 +173,7 @@ The public identity can optionally be published in `setup/config.json`.
 
 ## 🛠️ Backup & Logging
 
-- **Backups:** Every change to opinions.json creates a timestamped backup under `data/backups/`.
+- **Backups:** Each change to opinions.json creates a timestamped backup in `data/backups/`.
 - **Logging:** Actions & errors are logged in `data/resonanznet.log`.
 
 ---
@@ -172,14 +187,14 @@ The public identity can optionally be published in `setup/config.json`.
 
 ## 🤝 Contributors
 
-- Systemic Lead Developer: Dominic-René Schu
+- Systemic lead developer: Dominic-René Schu
 
 ---
 
 ## 📨 Contact & Extension
 
-- Issues & Feedback: [GitHub Issues](https://github.com/DominicReneSchu/ResoNet/issues)
-- Suggestions for field features and extensions are expressly welcome.
+- Issues & feedback: [GitHub Issues](https://github.com/DominicReneSchu/ResoNet/issues)
+- Proposals for new field features and extensions are welcome.
 
 ---
 

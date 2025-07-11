@@ -4,5 +4,6 @@
   "port": 0,
   "storage_path": "",
   "field": "",
+  "user_storage_limit": 2147483648,
   "custom": {}
 }

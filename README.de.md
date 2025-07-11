@@ -27,6 +27,20 @@ Jeder Raspy-Knoten:
 
 ---
 
+## 🗄️ Speicher- und Feldstruktur (systemisch)
+
+- Die 64GB SD-Karte wird initial für das Betriebssystem (Raspbian/Raspberry Pi OS) genutzt (typisch 5–10GB, variiert durch Updates).
+- **2GB sind systemisch exklusiv als maximales User-Limit für eigene Meinungen reserviert.**
+    - Dieses Limit ist technisch im Feldcode (config.json, storage.py, main.py, web.py) fest verankert und kann nicht überschritten werden.
+    - Überschreitung wird verhindert: Vor jedem Speichervorgang wird geprüft, ob das Limit erreicht ist.
+- **Der verbleibende Speicherplatz (typisch 52–57GB, dynamisch abhängig von OS-Größe) steht automatisch für das Feld zur Verfügung.**
+    - Dieser Bereich umfasst Resonanzdaten, Feldkopien, Konsens, Backups, Netzwerksynchronisation.
+    - Die Feldgröße passt sich dynamisch dem Gesamtzustand an – der Userbereich bleibt invariant auf 2GB limitiert.
+- Es erfolgt **keine statische Partitionierung**: Die Aufteilung ist systemisch-adaptiv, das Feld reguliert sich über die Limitlogik automatisch.
+- Die Grenzen gelten feldweit, unabhängig von individueller Sichtweise (Resonanzregel).
+
+---
+
 ## ⚙️ Installation (Raspberry Pi)
 
 ### Voraussetzungen:
@@ -95,15 +109,15 @@ python3 ui/web.py
 ## 🌐 Architekturüberblick
 
 - **main.py**: Einstiegspunkt, orchestriert Laden, Signatur, Sync, Speicherung.
-- **storage.py**: Meinungsverwaltung, automatisches Backup & Versionierung.
+- **storage.py**: Meinungsverwaltung, Speicherlimitkontrolle (2GB User-Limit), automatisches Backup & Versionierung.
 - **sync.py**: Netzwerk-Synchronisation (P2P-ready, HTTP-Stub).
 - **verify.py**: Kryptografische Signaturen für Authentizität.
-- **web.py**: Web-UI, Eintragen & Anzeigen von Meinungen, Konsensanzeige.
+- **web.py**: Web-UI, Eintragen & Anzeigen von Meinungen, Konsensanzeige, Limit-Feedback.
 - **viz_network.py**: Visualisierung der Feldstruktur und Themencluster.
 - **consensus_extract.py**: GPT-kompatibler Export des Feldkonsenses.
 - **generate_keys.py**: RSA-Keypair-Generator für Identität & Verifikation.
-- **install.sh**: Setup-Skript inkl. Keygen, Abhängigkeitsinstallation.
-- **config.json**: Knotenkonfiguration (Name, Port, Topics, Peers).
+- **install.sh**: Setup-Skript inkl. Keygen, Abhängigkeitsinstallation, Speicherlimit-Hinweis.
+- **config.json**: Knotenkonfiguration (Name, Port, Topics, Peers, Speicherlimit).
 
 ---
 
@@ -127,6 +141,7 @@ python3 ui/web.py
 - **Meinungen im Feld:** Tabellarische Übersicht aller Stimmen, sortiert nach Zeit.
 - **Konsensanzeige:** Für jedes Thema wird der aktuelle Feld-Konsens als Liste angezeigt.
 - **Themenfilter:** Auswahlfeld zur gezielten Ansicht/Eingabe je Topic.
+- **Speicherlimit-Anzeige:** Aktueller Verbrauch und User-Grenze werden farblich visualisiert, Schreibsperre bei Überschreitung.
 - **Sync-Button:** Synchronisation mit Peers (Platzhalter, P2P-ready).
 
 ![Web-UI Screenshot](docs/resonet_webui_screenshot.png)

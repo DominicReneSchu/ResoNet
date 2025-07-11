@@ -2,6 +2,7 @@
 ResonanzNet Web-UI – Das lokale Portal ins Feld
 Erweitert um Konsensanzeige, Themenfilter und Gruppenstruktur.
 Systemisch: Zeigt Meinungsvielfalt, Konsens und Gruppenzugehörigkeit im Browser.
+Inkludiert: Speicherlimit-Anzeige und -Kontrolle (2GB User-Limit, 62GB Feld).
 """
 
 from flask import Flask, render_template_string, request, redirect, url_for, flash
@@ -9,9 +10,11 @@ import json
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict, Counter
+import os
 
 DATA_PATH = Path("../data/opinions.json")
 CONFIG_PATH = Path("../setup/config.json")
+USER_STORAGE_LIMIT_DEFAULT = 2 * 1024 * 1024 * 1024  # 2GB
 
 app = Flask(__name__)
 app.secret_key = "resonanzfeld"  # für Flash-Nachrichten
@@ -21,6 +24,12 @@ TEMPLATE = """
 <title>ResonanzNet Feld-UI</title>
 <h1>ResonanzNet: Das Feld der Stimmen</h1>
 <p><b>Knoten:</b> {{ node_name }}</p>
+<p><b>Speicherlimit (User):</b> {{ user_storage_limit // (1024*1024) }} MB &nbsp;
+   | Genutzter Speicher: {{ used_bytes // (1024*1024) }} MB
+   | <span style="color: {% if used_bytes > user_storage_limit %}red{% elif used_bytes > user_storage_limit*0.9 %}orange{% else %}green{% endif %};">
+        {% if used_bytes > user_storage_limit %}Limit überschritten!{% elif used_bytes > user_storage_limit*0.9 %}Beinahe voll{% else %}OK{% endif %}
+     </span>
+</p>
 <p><b>Themenfelder:</b>
    <form method="get" action="{{ url_for('index') }}" style="display:inline;">
     <select name="topic_filter" onchange="this.form.submit()">
@@ -33,6 +42,7 @@ TEMPLATE = """
 </p>
 <hr>
 <h2>Neue Meinung eintragen</h2>
+{% if used_bytes < user_storage_limit %}
 <form method="post" action="{{ url_for('add_opinion') }}">
     <label>Thema:
         <select name="topic">
@@ -46,6 +56,9 @@ TEMPLATE = """
     </label><br>
     <button type="submit">Absenden</button>
 </form>
+{% else %}
+<p style="color:red;"><b>Speicherlimit erreicht: Es können keine weiteren Meinungen gespeichert werden (2GB User-Limit).</b></p>
+{% endif %}
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul>{% for msg in messages %}<li>{{ msg }}</li>{% endfor %}</ul>
@@ -103,7 +116,7 @@ def load_config():
     if CONFIG_PATH.exists():
         with open(CONFIG_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"node_name": "raspy.local", "topics": ["Allgemein"]}
+    return {"node_name": "raspy.local", "topics": ["Allgemein"], "user_storage_limit": USER_STORAGE_LIMIT_DEFAULT}
 
 def load_opinions():
     if DATA_PATH.exists():
@@ -115,6 +128,13 @@ def save_opinions(opinions):
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(opinions, f, ensure_ascii=False, indent=2)
+
+def get_used_bytes(opinions=None):
+    # Schätzt aktuelle Speicherbelegung der opinions.json (User-Daten)
+    if opinions is None:
+        opinions = load_opinions()
+    b = json.dumps(opinions, ensure_ascii=False, indent=2).encode("utf-8")
+    return len(b)
 
 def build_consensus(opinions):
     # Gruppiert Meinungen pro Topic, zählt Häufigkeit, zeigt Top-3 pro Thema
@@ -137,6 +157,8 @@ def index():
     topics = config.get("topics", ["Allgemein"])
     topic_filter = request.args.get("topic_filter", "")
     consensus, topic_counts = build_consensus(opinions)
+    user_storage_limit = config.get("user_storage_limit", USER_STORAGE_LIMIT_DEFAULT)
+    used_bytes = get_used_bytes(opinions)
     return render_template_string(
         TEMPLATE,
         node_name=config.get("node_name", "raspy.local"),
@@ -144,27 +166,34 @@ def index():
         opinions=opinions_sorted,
         consensus=consensus,
         topic_counts=topic_counts,
-        topic_filter=topic_filter
+        topic_filter=topic_filter,
+        user_storage_limit=user_storage_limit,
+        used_bytes=used_bytes
     )
 
 @app.route("/add", methods=["POST"])
 def add_opinion():
     config = load_config()
     opinions = load_opinions()
+    user_storage_limit = config.get("user_storage_limit", USER_STORAGE_LIMIT_DEFAULT)
     author = config.get("node_name", "raspy.local")
     topic = request.form.get("topic", "Allgemein")
     text = request.form.get("opinion", "").strip()
     if not text:
         flash("Meinung darf nicht leer sein.")
         return redirect(url_for("index"))
-    opinion = {
+    # Speicherlimit-Prüfung vor dem Hinzufügen
+    test_opinions = opinions + [{
         "author": author,
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "topic": topic,
         "opinion": text,
         "signature": ""
-    }
-    opinions.append(opinion)
+    }]
+    if get_used_bytes(test_opinions) > user_storage_limit:
+        flash("❌ Speicherlimit erreicht: Es können keine weiteren Meinungen gespeichert werden (2GB User-Limit).")
+        return redirect(url_for("index"))
+    opinions = test_opinions
     save_opinions(opinions)
     flash("Meinung eingetragen!")
     return redirect(url_for("index"))

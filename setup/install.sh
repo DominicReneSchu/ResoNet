@@ -28,6 +28,10 @@ fi
 touch ../data/opinions.json
 touch ../setup/config.json
 
+# Speicherlimit-Hinweis (systemisch gruppenweit wirksam)
+echo "Systemisches Speicherlimit für Nutzer-Daten: 2GB (2147483648 Bytes) pro Node. Rest (62GB) für das Feld reserviert."
+echo "Grenzen werden beim Speichern automatisch überwacht. Siehe setup/config.json und storage.py."
+
 echo "✓ Grundsystem installiert. Starte das Feld mit:"
 echo "source venv/bin/activate && python3 ../node/main.py"
 echo "Öffne Webinterface nach Start (Flask notwendig):"
