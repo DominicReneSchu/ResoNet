@@ -12,17 +12,17 @@ Welcome to the open resonance field of **ResoNet**.
 Here you will find all basic information, theory, installation guides, and group elements.
 
 ---
+## 🚀 Schnellstart / Quickstart
 
-## 📚 Dokumentation & Einstieg / Documentation & Entry
 
 - [Deutsche Einführung & Anleitung](./README.de.md)
 - [English Introduction & Guide](./README.en.md)
 
 ---
 
-## 🚀 Schnellstart / Quickstart
+## 📚 Dokumentation & Einstieg / Documentation & Entry
 
-- [README (Deutsch)](https://github.com/DominicReneSchu/public/blob/main/de/fakten/docs/gesellschaft/resonet_erkl%C3%A4rung.md)
+- [README (Deutsch)](https://github.com/DominicReneSchu/public/blob/main/de/fakten/docs/gesellschaft/resonet_erklärung.md)
 - [README (English)](https://github.com/DominicReneSchu/public/blob/main/en/facts/docs/society/resonet_theory.md)
 
 ---

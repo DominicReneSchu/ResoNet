@@ -30,22 +30,65 @@ Jeder Raspy-Knoten:
 ## ⚙️ Installation (Raspberry Pi)
 
 ### Voraussetzungen:
-- Raspberry Pi (empfohlen: 4 oder 5)
+- Raspberry Pi (empfohlen: 4 oder 5) 64GB
 - Raspberry Pi OS (Lite oder Desktop)
 - Internetzugang
 - SSH (optional)
 
-### Setup:
+---
+
+### **Schritt-für-Schritt-Anleitung zur Inbetriebnahme auf dem Raspberry Pi 5**
+
+#### 1. Systembasis: Raspberry Pi OS (Raspbian) installieren
+- **Image herunterladen:** [Offizielle Website](https://www.raspberrypi.com/software/)
+- **Image auf SD-Karte schreiben:** Mit Raspberry Pi Imager oder balenaEtcher.
+- **SD-Karte einsetzen und Pi starten:** Grundinstallation durchführen (Sprache, Netzwerk, Updates).
+- **SSH aktivieren (optional):**  
+  `sudo raspi-config` → Interface Options → SSH
+
+#### 2. System aktualisieren und Python/Git installieren
 ```bash
-git clone https://github.com/DominicReneSchu/ResoNet.git
-cd ResoNet/setup
-chmod +x install.sh
-./install.sh
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip git
 ```
 
-Danach erreichst du das Webinterface lokal über:
+#### 3. Repository beziehen
+```bash
+git clone https://github.com/DominicReneSchu/ResoNet.git
+cd ResoNet
+```
 
-http://raspberrypi.local:5000
+#### 4. Python-Abhängigkeiten installieren
+```bash
+pip3 install -r requirements.txt
+```
+(Falls keine `requirements.txt`, siehe Hinweise im README oder installiere Pakete manuell.)
+
+#### 5. Initialisierung: Schlüssel und Konfiguration
+```bash
+python3 node/generate_keys.py
+```
+- Erst jetzt werden `private.pem` und `public.pem` erzeugt.
+- **config.json** öffnen und anpassen (z.B. mit `nano config.json`):
+  - Knotenname
+  - Netzwerkadresse/Feld
+  - Port
+  - Speicherpfade
+  - Weitere Einstellungen nach README
+
+#### 6. Resonanzdateien kontrollieren
+- `opinions.json` und `consensus_export.json` sollten als leeres Array (`[]`) existieren.
+
+#### 7. Systemstart
+```bash
+python3 node/main.py
+python3 ui/web.py
+```
+- Webinterface öffnen: [http://localhost:5000](http://localhost:5000) oder [http://raspberrypi.local:5000](http://raspberrypi.local:5000)
+
+#### 8. Betrieb & Feldkopplung
+- Netzwerkteilnahme: Nach dem Start ist dein Knoten resonanzfähig und nimmt am Feld teil.
+- Monitoring: Prüfe Logausgaben und Netzwerkverbindungen (siehe README).
 
 ---
 
