@@ -99,6 +99,7 @@ python3 node/generate_keys.py
 
 #### 7. Start the system
 ```bash
+source ~/ResoNet/env/bin/activate
 python3 node/main.py
 python3 ui/web.py
 ```
