@@ -190,6 +190,147 @@ Die öffentliche Identität kann optional in `setup/config.json` veröffentlicht
 
 ---
 
+# 🌊 Semantische Tiefe-Bewertung mit Coral USB Accelerator
+
+---
+
+## 🧭 Systemischer Überblick
+
+Dein Raspy wird Teil einer **semantisch resonanten Feldstruktur**: Jeder Knoten erkennt lokal, wie viel gesellschaftliche Tiefe ein Beitrag besitzt – und stimmt sich über Resonanz mit anderen Knoten ab. Die Gruppenzugehörigkeit jedes Beitrags ("shallow", "medium", "deep") ist systemisch invariant und wird durch kollektive wie individuelle Bewertung im Resonanzfeld emergent bestimmt.
+
+---
+
+## 🔁 Ablaufplan zur Tiefe-Erkennung via Coral + TFLite
+
+### 1. Trainingsdatenbasis definieren
+
+- `training/training_data.jsonl` erstellen:  
+  Format:  
+  ```json
+  {"text": "Beispieltext", "label": "deep"}
+  ```
+- Kategorien: `"shallow"`, `"medium"`, `"deep"`
+- 300–1000 Beispiele (eigene Texte oder aggregierte Beiträge)
+- Tools: Jupyter Notebook, Python-Skript, CSV→JSONL-Konverter
+
+**Tipp:**  
+Nutze das systemische Resonanzfeld: Auch implizite Gruppenzugehörigkeit (z.B. ironische Tiefe) gehört ins Datenset.
+
+---
+
+### 2. Klassifikator-Modell trainieren
+
+- Frameworks:  
+  - `transformers + datasets + sklearn` (Laptop/Cloud)  
+  - `keras + tf.data` (direkter `.tflite`-Export möglich)
+- Architektur:  
+  - Leichtes BERT-Modell (`DistilBERT`/`MobileBERT`)
+  - Eingabe: Text (max. 256 Tokens)
+  - Ausgabe: Klassifikation (`"shallow"`, `"medium"`, `"deep"`)
+
+---
+
+### 3. Export nach TensorFlow Lite + Coral
+
+- `tf.lite.TFLiteConverter` für `.tflite`
+- `edgetpu_compiler` für Coral-kompatibles Modell:
+  ```bash
+  edgetpu_compiler model.tflite
+  ```
+- Ergebnis:  
+  `model/depth_classification_edgetpu.tflite`
+
+---
+
+### 4. Inferenz-Skript auf Raspy
+
+- `scripts/infer_depth.py`:  
+  - Lädt `.tflite`-Modell, tokenisiert Text, gibt Tiefe & Confidence zurück
+  - Optional als REST-API (`/api/depth_score`) im Webinterface
+
+- Output:
+  ```json
+  { "depth_score": "deep", "confidence": 0.91 }
+  ```
+
+---
+
+### 5. Anzeige im Webinterface
+
+- Visualisierung pro Beitrag: “Tiefe: tief (91%)”
+- Sortierung & Filter nach Tiefe möglich
+
+---
+
+### 6. Resonanz-Synchronisation (optional/ausbaubar)
+
+- Knoten spiegeln Tiefe durch `"depth_votes"`
+- Finaler Wert = Mittelwert/gewichtete Resonanz aller Stimmen
+- P2P-API denkbar: `/depth_vote`
+
+---
+
+### 7. Testen & Optimieren
+
+- Teste mit eigenen, markierten Texten und Grenzfällen
+- Debug-Logging (`depth_score_log.txt`) zur Nachvollziehbarkeit
+
+---
+
+## 🗂 Empfohlene Ordnerstruktur
+
+```bash
+ResoNet/
+├── requirements.txt
+├── data/
+│   ├── opinions.json
+│   ├── consensus_export.json
+│   └── resonanznet.log
+├── model/
+│   └── depth_classification_edgetpu.tflite
+├── node/
+│   ├── main.py
+│   ├── sync.py
+│   ├── verify.py
+│   ├── generate_keys.py
+│   └── storage.py
+├── scripts/
+│   └── infer_depth.py
+├── training/
+│   ├── train_depth_model.py
+│   └── training_data.jsonl
+├── tools/
+│   ├── consensus_extract.py
+│   └── viz_network.py
+├── ui/
+│   └── web.py
+├── setup/
+│   ├── install.sh
+│   └── config.json
+```
+
+---
+
+## 📦 Nächste Schritte
+
+1. **JSONL-Schema & Beispielgenerator** anfordern (optional)
+2. Trainingsdaten sammeln & labeln
+3. Trainingsskript und Inferenz-Skript bereitstellen (auf Wunsch)
+4. Testen, Resonanzlogik verfeinern, Feedback ins Modell rückführen
+
+---
+
+## 🔗 Resonanzregel
+
+Die Gruppenzugehörigkeit eines Beitrags zum semantischen Tiefenfeld ist **systemisch invariant**—sie umfasst explizite wie implizite Schwingungen, unabhängig von Einzelperspektiven oder Sichtbarkeit.
+
+---
+
+**Fazit:**  
+Du schaffst eine maschinelle Resonanzwahrnehmung – jede Tiefe ist emergent, kollektiv und lokal überprüfbar. Die Resonanzregel wird systemisch garantiert.
+
+---
+
 ## 🤝 Mitwirkende
 
 - Systemischer Hauptentwickler: Dominic-René Schu
