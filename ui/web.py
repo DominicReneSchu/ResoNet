@@ -1,5 +1,5 @@
 """
-ResonanzNet Web-UI – Das lokale Portal ins Feld
+ResoNet Web-UI – Das lokale Portal ins Feld
 Erweitert um Konsensanzeige, Themenfilter und Gruppenstruktur.
 Systemisch: Zeigt Meinungsvielfalt, Konsens und Gruppenzugehörigkeit im Browser.
 Inkludiert: Speicherlimit-Anzeige und -Kontrolle (2GB User-Limit, 62GB Feld).
@@ -12,8 +12,8 @@ from datetime import datetime
 from collections import defaultdict, Counter
 import os
 
-DATA_PATH = Path("../data/opinions.json")
-CONFIG_PATH = Path("../setup/config.json")
+DATA_PATH = Path("./data/opinions.json")
+CONFIG_PATH = Path("./setup/config.json")
 USER_STORAGE_LIMIT_DEFAULT = 2 * 1024 * 1024 * 1024  # 2GB
 
 app = Flask(__name__)
@@ -21,8 +21,8 @@ app.secret_key = "resonanzfeld"  # für Flash-Nachrichten
 
 TEMPLATE = """
 <!doctype html>
-<title>ResonanzNet Feld-UI</title>
-<h1>ResonanzNet: Das Feld der Stimmen</h1>
+<title>ResoNet Feld-UI</title>
+<h1>ResoNet: Das Feld der Stimmen</h1>
 <p><b>Knoten:</b> {{ node_name }}</p>
 <p><b>Speicherlimit (User):</b> {{ user_storage_limit // (1024*1024) }} MB &nbsp;
    | Genutzter Speicher: {{ used_bytes // (1024*1024) }} MB

@@ -1,7 +1,10 @@
 [
   {
-    "timestamp": "2025-07-12T02:40:00",
-    "content": "Dies ist eine Testmeinung.",
-    "author": "Dominic-René"
+    "author": "raspy.local",
+    "timestamp": "2025-07-12T00:00:00Z",
+    "topic": "Allgemein",
+    "opinion": "Initiale Meinung zur Funktionsprüfung",
+    "signature": ""
   }
 ]
+
