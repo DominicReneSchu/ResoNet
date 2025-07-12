@@ -83,6 +83,7 @@ pip install -r requirements.txt
 
 #### 5. Initialization: Keys and configuration
 ```bash
+source ~/ResoNet/env/bin/activate
 python3 node/generate_keys.py
 ```
 - This generates `private.pem` and `public.pem`.
