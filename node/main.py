@@ -7,7 +7,7 @@ from pathlib import Path
 
 # Logging-Konfiguration (systemisch für das gesamte Feld)
 logging.basicConfig(
-    filename="../data/resonanznet.log",
+    filename="./data/resonanznet.log",
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
