@@ -74,7 +74,10 @@ cd ResoNet
 
 #### 4. Install Python dependencies
 ```bash
-pip3 install -r requirements.txt
+python3 -m venv ~/ResoNet/env
+source ~/ResoNet/env/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 (If there's no `requirements.txt`, see README notes or install packages manually.)
 
