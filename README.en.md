@@ -185,8 +185,7 @@ Public identity can optionally be published in `setup/config.json`.
 
 ## 📚 Theory & Introduction
 
-- [Systemic Introduction ResoNet_Erklärung.md](./ResoNet_Erklärung.md)
-- [English Introduction ResoNet_Theory_EN.md](./ResoNet_Theory_EN.md)
+- [English Introduction ResoNet_Theory_EN.md](https://github.com/DominicReneSchu/public/blob/main/en/facts/docs/society/resonet_theory.md)
 
 ---
 
