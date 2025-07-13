@@ -1,6 +1,6 @@
 # ResoNet – Das dezentrale Resonanzfeld-Netzwerk
 
-> Dein Raspy. Deine Meinung. Unser Resonanzfeld.
+> Not your Key, not your Voice.
 
 **ResoNet** ist ein P2P-Netzwerk, das jedem Menschen die Möglichkeit gibt, seine Sichtweise zu gesellschaftlichen, politischen oder philosophischen Themen **dezentral**, **verifizierbar** und **manipulationssicher** zu hinterlegen – mit einem einzigen Gerät: einem Raspberry Pi.
 

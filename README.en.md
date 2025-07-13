@@ -1,6 +1,6 @@
 # ResoNet – The Decentralized Resonance Field Network
 
-> Your Raspy. Your opinion. Our resonance field.
+> Not your Key, not your Voice.
 
 **ResoNet** is a P2P network that gives everyone the power to record their perspective on social, political, or philosophical topics **decentrally**, **verifiably**, and **tamper-proof** – with just one device: a Raspberry Pi.
 
